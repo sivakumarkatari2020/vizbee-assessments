@@ -1,38 +1,213 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+.ant-layout{
+  width: 100%;
+  height: 100%;
   min-height: 100vh;
+  max-height: 100vh;
+}
+.ant-layout-header{
+  height: 60px;
+  background-color: #394867;
+  color: #F1F6F9;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.header-wrapper{
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.icon-menu{
+  cursor: pointer;
+}
+.drawer-body{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.app-wrapper{
+  width: 100%;
+  height: calc(100% - 120px);
+  background-color: #F1F6F9;
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+.instruction-box{
+  width: 240px;
+  height: 400px;
+  background-color: #FFF;
+  border-radius: 5px;
+  padding: 1rem;
+}
+.instruction-box h3{
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.content-wrapper{
+  width: 100%;
+  max-width: 60%;
+  height: calc(100% - 120px);
+  
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.question-wrapper{
+  width: 95%;
+  min-width: 500px;
+  background-color: none;
+  margin-top: 1rem;
+}
+
+.time-wrapper{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+.timer{
+  width: 120px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #fff;
+  text-align: right;
+  margin-left: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-clock{
+  margin-right: .5rem;
+}
+.question-text{
+  font-size: 1.1rem;
+}
+.button-wrapper{
+  width: 100%;
+  margin-top: 2rem;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.button-wrapper .ant-btn{
+  width: 100%;
+  max-width: 150px;
+  margin-right: .5rem;
+}
+
+
+
+.row-flexer{
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.ant-layout-footer{
+  width: 100%;
+  height: 60px;
+  background-color: #F1F6F9;
+  position: fixed;
+  bottom: 0;
+}
+
+.audio-animation{
+  width: 100%;
+  height: 200px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+.animation{
+  width: 100px;
+  height: 100px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.animation span{
+  width: 10px;
+  height: 50px;
+  border-radius: 5px;
+  background-color: #9BA4B5;
+}
+span.first{
+  height: 20px;
+}
+span.second{
+  height: 35px;
+}
+span.third{
+  height: 50px;
+}
+span.fourth{
+  height: 35px;
+}
+span.fifth{
+  height: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.animation.running .first{
+  animation: keyStrokes 1s linear infinite;
+}
+.animation.running .second{
+  animation: keyStrokes 1s .5s linear infinite;
+}
+.animation.running .third{
+  animation: keyStrokes 1s 1s linear infinite;
+}
+.animation.running .fourth{
+  animation: keyStrokes 1s 1.5s linear infinite;
+}
+.animation.running .fifth{
+  animation: keyStrokes 1s 2s linear infinite;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+
+@keyframes keyStrokes {
+  0%{
+    height: 10px;
   }
-  to {
-    transform: rotate(360deg);
+  100%{
+    height: 50px;
+    background-color: #394867;
+  }
+}
+
+
+@media (max-width:600px) {
+  .instruction-box{
+    display: none;
+  }
+  .ant-layout-content{
+    max-width: none;
+  }
+  .ant-card{
+    width: 100%;
+    min-width: none;
+    max-width: none;
   }
 }
