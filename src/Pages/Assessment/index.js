@@ -4,6 +4,7 @@ import { ClockCircleOutlined } from '@ant-design/icons';
 import Webcam from 'react-webcam';
 
 import '../../App.css';
+import SendAssessmentStatusAPI from '../../Apis/SendAssessmentStatusAPI';
 
 const Assessment = () => {
     const [timer, setTimer] = useState(60); // Set timer to 60 seconds
@@ -19,6 +20,33 @@ const Assessment = () => {
     const [animation,setAnimation] = useState(false);
 
     const [timeUp,setTimeUp] = useState(false);
+
+    const sendData = async () => {
+        try{
+            //sample payload
+            const payload = {
+                ques_id : currentQuestion,
+                assess_id : 0,
+                data : audioBlob
+            }
+            const apiResponse = await SendAssessmentStatusAPI(payload);
+            console.log(apiResponse);
+
+            //According to the status from API
+            if(apiResponse.status === 200){
+                if(apiResponse.data.d.status === 200){
+                    console.log(apiResponse);
+                    console.log(apiResponse.data.d.Data);
+                } else {
+                    console.log("Error!!");
+                }
+            } else {
+                console.log("Error!!");
+            }    
+        } catch (err) {
+            console.log(err.message);
+        }
+    } 
 
     useEffect(() => {
       // Decrement timer every second
@@ -71,10 +99,12 @@ const Assessment = () => {
         mediaRecorder.start();
     };
 
-    const handleStopClick = () => {
+    const handleStopClick = async () => {
         setIsRecording(false);
         setAnimation(false);
         mediaRecorder.stop();
+
+        await sendData();
     };
 
     const handleDataAvailable = (event) => {
