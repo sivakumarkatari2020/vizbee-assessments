@@ -31,7 +31,7 @@ function AppLayout() {
             </div>
         </Header>
 
-        <Drawer title="Basic Drawer" placement="left" onClose={onClose} open={open}>
+        <Drawer title="Vizbee" placement="left" onClose={onClose} open={open}>
             <div className="drawer-body">
                 <Button type="link" href="/app/dashboard">Dashboard</Button>
                 <Button type="link" href="/app/skills">Skills</Button>

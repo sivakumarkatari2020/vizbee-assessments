@@ -5,6 +5,7 @@ import Webcam from 'react-webcam';
 
 import '../../App.css';
 import SendAssessmentStatusAPI from '../../Apis/SendAssessmentStatusAPI';
+import LoadQuestionsAPI from '../../Apis/LoadQuestionsAPI';
 
 const Assessment = () => {
     const [timer, setTimer] = useState(60); // Set timer to 60 seconds
@@ -12,6 +13,43 @@ const Assessment = () => {
     const [showConfirmation, setShowConfirmation] = useState(false);
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
+    const [questions,setQuestions] = useState([
+        {
+            id: 1,
+            question : "What is React and what are its advantages?"
+        },
+        {
+            id: 2,
+            question : "What are the differences between React and other JavaScript frameworks?"
+        },{
+            id: 3,
+            question : "How can you create a stateless component in React?"
+        },{
+            id: 4,
+            question : "What is the virtual DOM in React and how does it work?"
+        },{
+            id: 5,
+            question : "What are React Hooks and how do they work?"
+        },{
+            id: 6,
+            question : "How do you pass data between parent and child components in React?"
+        },{
+            id: 7,
+            question : "What is JSX and how does it differ from HTML?"
+        },{
+            id: 8,
+            question : "How do you handle events in React?"
+        },
+        {
+            id: 9,
+            question : "What are the benefits of using Redux in a React application?"
+        },
+        {
+            id: 10,
+            question : "What are the best practices for optimizing React application performance?"
+        }
+    ]);
+
     const [audioChunks, setAudioChunks] = useState([]);
     const [mediaRecorder, setMediaRecorder] = useState(null);
     const [audioBlob, setAudioBlob] = useState(null);
@@ -20,6 +58,7 @@ const Assessment = () => {
     const [animation,setAnimation] = useState(false);
 
     const [timeUp,setTimeUp] = useState(false);
+    const [flag,setFlag] = useState(false);
 
     const sendData = async () => {
         try{
@@ -64,6 +103,7 @@ const Assessment = () => {
             setIsRecording(false);
             setAnimation(false);
             setTimeUp(true);
+            setFlag(true);
             clearInterval(interval);
         }
 
@@ -91,6 +131,7 @@ const Assessment = () => {
     const handleRecordClick = async () => {
         setIsRecording(true);
         setAnimation(true);
+        setFlag(true);
 
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const mediaRecorder = new MediaRecorder(stream);
@@ -128,6 +169,7 @@ const Assessment = () => {
         setElapsedTime(0);
         setAnimation(false);
         setTimeUp(false);
+        setFlag(false);
     };
 
     const handleFinishClick = () => {
@@ -155,6 +197,7 @@ const Assessment = () => {
         setElapsedMin(0);
         setElapsedTime(0);
         setAudioChunks([]);
+        setFlag(false);
 
         if(currentQuestion < 9){
             setCurrentQuestion((prevQuestion) => prevQuestion + 1);
@@ -163,6 +206,33 @@ const Assessment = () => {
             setShowConfirmation(true);
         }
     }
+
+    //For initial data loading as questions
+    useEffect(()=>{
+        async function fetchData(){
+            try{
+                const apiResponse = await LoadQuestionsAPI();
+                console.log(apiResponse);
+
+                //According to the status from API
+                if(apiResponse.status === 200){
+                    if(apiResponse.data.d.status === 200){
+                        console.log(apiResponse);
+                        console.log(apiResponse.data.d.Data);
+                        setQuestions(apiResponse.data.d.Data);
+                    } else {
+                        console.log("Error!!");
+                    }
+                } else {
+                    console.log("Error!!");
+                }    
+            } catch (err) {
+                console.log(err.message);
+            }
+        }
+
+        fetchData();
+    },[]);
 
     const webcamOptions = {
         height: 180,
@@ -173,19 +243,6 @@ const Assessment = () => {
         },
     };
 
-    const questions = [
-        "What is React and what are its advantages?",
-        "What are the differences between React and other JavaScript frameworks?",
-        "How can you create a stateless component in React?",
-        "What is the virtual DOM in React and how does it work?",
-        "What are React Hooks and how do they work?",
-        "How do you pass data between parent and child components in React?",
-        "What is JSX and how does it differ from HTML?",
-        "How do you handle events in React?",
-        "What are the benefits of using Redux in a React application?",
-        "What are the best practices for optimizing React application performance?"
-    ]
-
     return (
         <div className="app-wrapper">
             <div className="content-wrapper">
@@ -194,7 +251,7 @@ const Assessment = () => {
                         <p className="timer"><ClockCircleOutlined className="icon-clock"/> Timer: {timer}</p>
                     </div>
                     <div className="row-flexer">
-                        <p className="question-text">{currentQuestion+1}. {questions[currentQuestion]}</p>
+                        <p className="question-text">{questions[currentQuestion].id}. {questions[currentQuestion].question}</p>
                     </div>
                     <div className="audio-animation">
                         {
@@ -231,7 +288,7 @@ const Assessment = () => {
                                 : <Button onClick={handleSkip}>Skip</Button>
                         }   
                         {
-                            timeUp
+                            !isRecording && flag
                             ? <Button onClick={handleNextClick}>Next</Button>
                             : <Button onClick={handleNextClick} disabled>Next</Button>
                         }

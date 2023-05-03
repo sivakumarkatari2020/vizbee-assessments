@@ -41,6 +41,9 @@
   align-items: flex-start;
   justify-content: space-around;
 }
+.right-wrapper{
+  padding-top: 1rem;
+}
 .instruction-box{
   width: 240px;
   height: 400px;
